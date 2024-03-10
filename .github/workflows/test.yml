@@ -35,7 +35,16 @@ jobs:
       - name: Install NPM packages
         run: npm install
 
+      - name: Install just command runner
+        run: |
+          curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --force
+
+      - name: Bootup Anvil node
+        run: |
+          export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
+          just anvil
+
       - name: Run Foundry tests
         run: |
-          export PROVIDER_URI_SEPOLIA=${{ secrets.PROVIDER_URI_SEPOLIA }}
+          export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
           RUST_BACKTRACE=1 forge test -vvv
