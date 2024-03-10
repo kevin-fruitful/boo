@@ -1,0 +1,12 @@
+@axiom-crypto/axiom-std/=lib/axiom-std/src/
+@aave/core-v3/=lib/aave-address-book/lib/aave-v3-core/
+@aave/periphery-v3/=lib/aave-address-book/lib/aave-v3-periphery/
+@axiom-crypto/v2-periphery/=lib/axiom-std/lib/axiom-v2-periphery/src/
+aave-address-book/=lib/aave-address-book/src/
+aave-v3-core/=lib/aave-v3-core/
+aave-v3-periphery/=lib/aave-v3-periphery/contracts/
+axiom-std/=lib/axiom-std/src/
+axiom-v2-periphery/=lib/axiom-std/lib/axiom-v2-periphery/src/
+comet/=lib/comet/contracts/
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/

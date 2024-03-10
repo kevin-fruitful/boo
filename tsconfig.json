@@ -108,5 +108,5 @@
   },
   "include": [
     "app"
-  ]
+, "app/axiom/.circuit.ts"  ]
 }

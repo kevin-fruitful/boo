@@ -1,6 +1,7 @@
 [profile.default]
 src = "src"
 out = "out"
+script = "script"
 solc = "0.8.19"
 libs = ["node_modules", "lib"]
 remappings = ["@axiom-crypto/axiom-std/=lib/axiom-std/src/"]
@@ -8,16 +9,28 @@ ffi = true
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
 [rpc_endpoints]
-sepolia = "${PROVIDER_URI_SEPOLIA}"
-mainnet = "${PROVIDER_URI_MAINNET}"
+mainnet = "${RPC_MAINNET}"
+sepolia = "${RPC_SEPOLIA}"
+optimism = "${RPC_OPTIMISM}"
+avalanche = "${RPC_AVALANCHE}"
+polygon = "${RPC_POLYGON}"
+arbitrum = "${RPC_ARBITRUM}"
+fantom = "${RPC_FANTOM}"
+harmony = "${RPC_HARMONY}"
+metis = "${RPC_METIS}"
+base = "${RPC_BASE}"
+zkevm = "${RPC_ZKEVM}"
+gnosis = "${RPC_GNOSIS}"
+bnb = "${RPC_BNB}"
+anvil = "http://127.0.0.1:8545"
 
 [fmt]
-  bracket_spacing = true
-  int_types = "long"
-  line_length = 120
-  multiline_func_header = "attributes_first"
-  number_underscore = "thousands"
-  quote_style = "double"
-  single_line_statement_blocks = "multi"
-  tab_width = 4
-  wrap_comments = false
+bracket_spacing = true
+int_types = "long"
+line_length = 120
+multiline_func_header = "attributes_first"
+number_underscore = "thousands"
+quote_style = "double"
+single_line_statement_blocks = "multi"
+tab_width = 4
+wrap_comments = false
