@@ -26,6 +26,7 @@ jobs:
         with: 
           version: nightly-293fad73670b7b59ca901c7f2105bf7a29165a90
 
+
       - name: Check forge version
         run: forge --version
 
@@ -36,9 +37,8 @@ jobs:
         run: npm install
 
       - name: Install just command runner
-        run: |
-          curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --force
-
+        uses: extractions/setup-just@v1
+          
       - name: Bootup Anvil node
         run: |
           export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
