@@ -6,8 +6,8 @@
   "scripts": {
     "start": "tsx app/index.ts"
   },
-  "keywords": [],
-  "author": "Kevin Park",
+  "keywords": ["Axiom", "Aave", "ZK", "Solidity", "Foundry"],
+  "author": "Kevin Park <kevin@fruitful.gg>",
   "license": "MIT",
   "dependencies": {
     "@axiom-crypto/client": "2.0.5",
