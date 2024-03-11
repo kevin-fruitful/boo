@@ -15,10 +15,14 @@ anvil: togglefalse
 
 # Toggle the env variable TEST_SETUP to false
 togglefalse:
+    #!/usr/bin/env zsh
+    set -euxo pipefail
     sed -i '' -e 's/TEST_SETUP=.*/TEST_SETUP=false/' .env
 
 # Toggle the env variable TEST_SETUP to true
 toggletrue:
+    #!/usr/bin/env zsh
+    set -euxo pipefail
     sed -i '' -e 's/TEST_SETUP=.*/TEST_SETUP=true/' .env
 
 # Setup contracts and state on the fork. This is necessary to get logging.

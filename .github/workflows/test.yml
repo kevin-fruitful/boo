@@ -41,6 +41,10 @@ jobs:
       - name: Install tmux
         run: sudo apt-get install -y tmux
 
+      - name: Setup .env file
+        run: |
+          echo "TEST_SETUP=false" > .env
+
       - name: Start Anvil in a tmux session
         run: |
           export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
