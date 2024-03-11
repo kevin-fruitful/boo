@@ -26,7 +26,6 @@ jobs:
         with: 
           version: nightly-293fad73670b7b59ca901c7f2105bf7a29165a90
 
-
       - name: Check forge version
         run: forge --version
 
@@ -39,12 +38,20 @@ jobs:
       - name: Install just command runner
         uses: extractions/setup-just@v1
           
-      - name: Bootup Anvil node
+      - name: Install tmux
+        run: sudo apt-get install -y tmux
+
+      - name: Start Anvil in a tmux session
         run: |
           export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
-          just anvil
+          tmux new-session -d -s anvil 'just anvil'
+          # Optionally, wait for Anvil to be fully ready
 
       - name: Run Foundry tests
         run: |
           export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
           RUST_BACKTRACE=1 forge test -vvv
+
+      - name: Kill the tmux session
+        if: always()
+        run: tmux kill-session -t anvil
