@@ -45,7 +45,6 @@ jobs:
         run: |
           export RPC_MAINNET=${{ secrets.RPC_MAINNET }}
           tmux new-session -d -s anvil 'just anvil'
-          # Optionally, wait for Anvil to be fully ready
 
       - name: Run Foundry tests
         run: |
