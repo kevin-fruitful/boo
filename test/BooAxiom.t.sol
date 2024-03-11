@@ -47,10 +47,21 @@ contract BooAxiomTest is AxiomTest {
         vm.ffi(cli);
     }
 
+    function _toggle() internal {
+        string[] memory cli = new string[](2);
+        cli[0] = "just";
+        cli[1] = "toggletrue";
+        vm.ffi(cli);
+    }
+
     function setUp() public {
         _createSelectForkAndSetupAxiom("anvil", 19_400_000);
-        _setupBoo();
-        _callBoo();
+        if (!vm.envOr({ name: "TEST_SETUP", defaultValue: false })) {
+            c.log("Setting up Boo");
+            _setupBoo();
+            _callBoo();
+            _toggle();
+        }
 
         input = AxiomInput({ blockNumber: uint64(19_400_004), txIdx: 0, logIdx: 9 });
         querySchema = axiomVm.readCircuit("app/axiom/claim.circuit.ts");
@@ -85,6 +96,12 @@ contract BooAxiomTest is AxiomTest {
         c.log("scaledAmount: ", results.toUint(4));
         Rewards memory rewards = BOO.rewards(ALICE);
         assertEq(rewards.discountedBorrowingRates, true);
+
+        vm.expectRevert();
+        q.prankFulfill();
+
+        // vm.warp(block.timestamp + 50 days);
+        // q.prankFulfill();
     }
 }
 

@@ -130,6 +130,9 @@ contract Boo is PoolModified {
         return super.withdraw(asset, amount, to);
     }
 
+    /// @notice Get the rewards for a user.
+    /// @param user The user to get the rewards for.
+    /// @return Rewards The rewards for the user.
     function rewards(address user) external view returns (Rewards memory) {
         return _rewards[user];
     }

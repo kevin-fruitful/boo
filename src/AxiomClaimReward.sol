@@ -10,17 +10,21 @@ import "./interfaces/IBoo.sol";
 import "./DataTypes.sol";
 
 contract AxiomClaimReward is AxiomV2Client {
-    error NotEligibleForRewards();
+    error NotEligibleForRewards(uint256 blocks, uint256 blocksInInterval);
     error BalanceHasNotIncreased(uint256 originalScaledBalance, uint256 currentScaledBalance);
+    error NotEnoughBlocksHavePassed(uint256 targetBlock, uint256 currentBlock);
     error IneligibleBlock();
+    error InvalidAsset(address expectedAsset, address actualAsset);
 
     event AxiomCallback(uint256 currentScaledBalance, uint256 scaledAmount);
 
+    IBoo internal BOO = IBoo(address(AaveV3Ethereum.POOL));
     IAToken internal AUSDC = IAToken(AaveV3EthereumAssets.USDC_A_TOKEN);
 
     /// @dev When rewards can start to be claimed.
     uint256 public immutable MIN_BLOCK_NUMBER;
 
+    /// @dev The interval at which rewards can be claimed.
     uint256 internal constant REWARD_INTERVAL_BLOCKS = 216_000; // 30 days with 12 second blocks
 
     /// @dev The unique identifier of the circuit accepted by this contract.
@@ -28,8 +32,6 @@ contract AxiomClaimReward is AxiomV2Client {
 
     /// @dev The chain ID of the chain whose data the callback is expected to be called from.
     uint64 public immutable SOURCE_CHAIN_ID;
-
-    IBoo internal BOO;
 
     /// @param  _axiomV2QueryAddress The address of the AxiomV2Query contract.
     /// @param  _callbackSourceChainId The ID of the chain the query reads from.
@@ -39,7 +41,6 @@ contract AxiomClaimReward is AxiomV2Client {
         MIN_BLOCK_NUMBER = block.number;
         QUERY_SCHEMA = _querySchema;
         SOURCE_CHAIN_ID = _callbackSourceChainId;
-        BOO = IBoo(address(AaveV3Ethereum.POOL));
     }
 
     /// @inheritdoc AxiomV2Client
@@ -63,21 +64,27 @@ contract AxiomClaimReward is AxiomV2Client {
             revert IneligibleBlock();
         }
 
+        if (asset != AaveV3EthereumAssets.USDC_UNDERLYING) {
+            revert InvalidAsset(AaveV3EthereumAssets.USDC_UNDERLYING, asset);
+        }
+
         // Eligible for rewards if:
         // Current scaled balance is greater than the amount the user transferred from the competing protocol.
         uint256 currentScaledBalance = AUSDC.scaledBalanceOf(user);
-        emit AxiomCallback(currentScaledBalance, scaledAmount);
 
+        // The user's balance in Aave has increased by at least the amount they transferred from the competing protocol.
         if (currentScaledBalance < scaledAmount) {
             revert BalanceHasNotIncreased(scaledAmount, currentScaledBalance);
         }
+
         // 30 days have passed
         if (blockNumber + REWARD_INTERVAL_BLOCKS < block.number) {
-            revert NotEligibleForRewards();
+            revert NotEnoughBlocksHavePassed(blockNumber + REWARD_INTERVAL_BLOCKS, block.number);
         }
-        // 30 days have passed since the last claim.
+
+        // 30 days have passed since the last claim. todo fix
         if (blockNumber - BOO.rewards(user).lastClaimedBlock < REWARD_INTERVAL_BLOCKS) {
-            revert NotEligibleForRewards();
+            revert NotEligibleForRewards(blockNumber - BOO.rewards(user).lastClaimedBlock, REWARD_INTERVAL_BLOCKS);
         }
 
         BOO.updateRewards({ user: user });

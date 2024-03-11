@@ -1,5 +1,8 @@
 set dotenv-load := true
 
+alias tf := togglefalse
+alias tt := toggletrue
+
 # Defining variables
 FORK_BLOCK_NUMBER := "19400000"
 # Comet whale account on ethereum mainnet
@@ -7,8 +10,16 @@ FORK_BLOCK_NUMBER := "19400000"
 FROM := "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 
 # Start anvil fork mainnet
-anvil:
+anvil: togglefalse
     anvil -f $RPC_MAINNET --fork-block-number {{FORK_BLOCK_NUMBER}} --auto-impersonate
+
+# Toggle the env variable TEST_SETUP to false
+togglefalse:
+    sed -i '' -e 's/TEST_SETUP=.*/TEST_SETUP=false/' .env
+
+# Toggle the env variable TEST_SETUP to true
+toggletrue:
+    sed -i '' -e 's/TEST_SETUP=.*/TEST_SETUP=true/' .env
 
 # Setup contracts and state on the fork. This is necessary to get logging.
 setup:
