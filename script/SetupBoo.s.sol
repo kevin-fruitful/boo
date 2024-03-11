@@ -63,7 +63,5 @@ contract SetupBooScript is BaseScript {
         BOO = Boo(address(AaveV3Ethereum.POOL));
 
         ICometExt(LC.COMET_USDC).allow(address(AaveV3Ethereum.POOL), true);
-        c.log("Block number before calling BOO.boo() is ~~ %s ~~", block.number);
-        // BOO.boo(AaveV3EthereumAssets.USDC_UNDERLYING, 100_000_000, false);
     }
 }

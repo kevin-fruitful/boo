@@ -29,14 +29,7 @@ contract AxiomClaimReward is AxiomV2Client {
     /// @dev The chain ID of the chain whose data the callback is expected to be called from.
     uint64 public immutable SOURCE_CHAIN_ID;
 
-    address public BOO_ADDRESS;
-
     IBoo internal BOO;
-
-    // todo only allow pool admin to update
-    function updateBooAddress(address newAddress) external {
-        BOO_ADDRESS = newAddress;
-    }
 
     /// @param  _axiomV2QueryAddress The address of the AxiomV2Query contract.
     /// @param  _callbackSourceChainId The ID of the chain the query reads from.
@@ -46,12 +39,10 @@ contract AxiomClaimReward is AxiomV2Client {
         MIN_BLOCK_NUMBER = block.number;
         QUERY_SCHEMA = _querySchema;
         SOURCE_CHAIN_ID = _callbackSourceChainId;
-        BOO_ADDRESS = address(AaveV3Ethereum.POOL);
-        BOO = IBoo(BOO_ADDRESS);
+        BOO = IBoo(address(AaveV3Ethereum.POOL));
     }
 
     /// @inheritdoc AxiomV2Client
-
     function _axiomV2Callback(
         uint64, // sourceChainId,
         address, // caller,
