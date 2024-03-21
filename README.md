@@ -2,13 +2,11 @@
 
 ![Boo Project Visualization](./images/booooo.webp)
 
-
-
 Using [Axiom Quickstart](https://github.com/axiom-crypto/axiom-quickstart)
 
 ## Introduction
 
-BOO. Everyone should use Aave over competing platforms, it's scary not to!
+BOO.
 
 This is an experimental implementation of novel reward mechanisms to attract users of competing platforms onto Aave using cutting edge zero knowledge technology by Axiom to enable the Boo contract to access historical blockchain data.
 
